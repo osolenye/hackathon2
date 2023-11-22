@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">hackathon2</string>
+    <string name="yourTemperature">Ваша температура: </string>
+    <string name="yourHumidity">Ваша влажность: </string>
+    <string name="status">статус окна: </string>
+    <string name="opened">открыто</string>
+    <string name="closed">закрыто</string>
+    <string name="registration">регистрация</string>
+    <string name="login">войти</string>
+    <string name="name">имя</string>
+    <string name="password">пароль</string>
+</resources>
