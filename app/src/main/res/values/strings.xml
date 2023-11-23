@@ -9,4 +9,5 @@
     <string name="login">ВОЙТИ</string>
     <string name="name">имя</string>
     <string name="password">пароль</string>
+    <string name="rooms">комнаты</string>
 </resources>
