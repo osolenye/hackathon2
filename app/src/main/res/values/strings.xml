@@ -5,8 +5,8 @@
     <string name="status">статус окна: </string>
     <string name="opened">открыто</string>
     <string name="closed">закрыто</string>
-    <string name="registration">регистрация</string>
-    <string name="login">войти</string>
+    <string name="registration">РЕГИСТРАЦИЯ</string>
+    <string name="login">ВОЙТИ</string>
     <string name="name">имя</string>
     <string name="password">пароль</string>
 </resources>

@@ -4,30 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3B664"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/button_login_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:background="#9FBB73"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/black"
+        android:fontFamily="Inter"
+        android:onClick="onButtonLoginClick"
         android:text="@string/login"
-        app:layout_constraintStart_toStartOf="@+id/button_registration_activity"
-        app:layout_constraintTop_toBottomOf="@+id/button_registration_activity"
-        android:onClick="onButtonLoginClick"/>
+        android:textColor="@color/cream"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_registration_activity" />
 
     <Button
         android:id="@+id/button_registration_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="281dp"
-        android:background="#9FBB73"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="271dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/black"
+        android:fontFamily="Inter"
+        android:onClick="onButtonRegistrationClick"
         android:text="@string/registration"
+        android:textColor="@color/cream"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="onButtonRegistrationClick"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
