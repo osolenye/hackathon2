@@ -29,6 +29,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         holder.textView_arduinoNumber.setText(windows.get(position).getNumArduino());
         holder.textView_windowName.setText(windows.get(position).getName());
     }
