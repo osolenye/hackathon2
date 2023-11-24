@@ -137,6 +137,11 @@ public class WindowsActivity extends AppCompatActivity {
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
+                                if (jsonObject.length() == 0) {
+                                    continue;
+                                }
+
+
 
                                 int id = jsonObject.getInt("id");
                                 String numArduino = jsonObject.getString("numArduino");
