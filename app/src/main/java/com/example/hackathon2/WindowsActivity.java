@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -16,6 +21,11 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hackathon2.Data.Window;
+//import com.example.hackathon2.databinding.ActivityMainBinding;
+import com.example.hackathon2.Data.WindowLV;
+import com.example.hackathon2.databinding.ActivityMainBinding;
+import com.example.hackathon2.databinding.ActivityWindowsBinding;
+import com.example.hackathon2.forListView.WindowAdapter;
 import com.example.hackathon2.forRecyclerView.MyAdapter;
 
 import org.json.JSONArray;
@@ -27,102 +37,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//public class WindowsActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_windows);
-//
-//        sendGETRequestWithToken(LoginActivity.access);
-//    }
-//
-//
-//
-//    public void sendGETRequestWithToken(String token) {
-//        String url = "http://makarovv25.pythonanywhere.com/api/current-user-devices/";
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//
-//        // Создайте GET запрос с использованием JsonObjectRequest
-//        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-//                        List<Window> windows = new ArrayList<Window>();
-//                        // Обработка успешного ответа от сервера
-//                        try {
-////                            JSONObject jsonObject = response.getJSONObject(0);
-////                            Toast.makeText(WindowsActivity.this, "huy" + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
-//
-//                            for (int i = 0; i < response.length(); i++) {
-//                                JSONObject jsonObject = response.getJSONObject(i);
-//
-//                                int id = jsonObject.getInt("id");
-//                                String numArduino = jsonObject.getString("numArduino");
-//                                String name = jsonObject.getString("name");
-//                                double temperature = jsonObject.getDouble("temperature");
-//                                double vlazhnost = jsonObject.getDouble("vlazhnost");
-//                                double gaz = jsonObject.getDouble("gaz");
-//                                boolean windowsAreOpened = jsonObject.getBoolean("windowsAreOpened");
-//                                boolean windowsAreBlocked = jsonObject.getBoolean("windowsAreBlocked");
-//                                int idDevice = jsonObject.getInt("idDevice");
-//                                int user = jsonObject.getInt("user");
-//
-//                                // Создаем новый объект Window и добавляем его в список
-//                                Window window = new Window(id, numArduino, name, temperature, vlazhnost, gaz, windowsAreOpened,
-//                                        windowsAreBlocked, idDevice, user);
-//                                windows.add(window);
-//
-//
-//                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//                                recyclerView.setAdapter(new MyAdapter(getApplicationContext(), windows));
-//                            }
-//
-//                            // В этом моменте windowList содержит объекты Window, созданные из JSON
-//
-//                            // Для примера, вы можете что-то сделать с этими объектами, например, вывести их количество
-//                            Toast.makeText(WindowsActivity.this, "Количество объектов Window: " + windows.size(), Toast.LENGTH_SHORT).show();
-//
-//
-//
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // Обработка ошибки
-//                        Toast.makeText(WindowsActivity.this, "error", Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                // Создайте заголовок Authorization с Bearer token
-//                Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Bearer " + token);
-//                return headers;
-//            }
-//        };
-//
-//        // Добавьте запрос в очередь
-//        queue.add(request);
-//    }
-//}
+
 public class WindowsActivity extends AppCompatActivity {
+    ActivityWindowsBinding binding;
+//    ListView listView = findViewById(R.id.listView);
+    public static ArrayList<Window> windows = new ArrayList<Window>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_windows);
+        binding = ActivityWindowsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         String token = LoginActivity.access; // Получите токен из нужного места, если это необходимо
 
-        String url = "http://makarovv25.pythonanywhere.com/api/current-user-devices/";
+        String url = "https://makarovv25.pythonanywhere.com/api/current-user-devices/";
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -131,8 +60,8 @@ public class WindowsActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                        List<Window> windows = new ArrayList<Window>();
+                        ArrayList<Window> windows = new ArrayList<Window>();
+                        ArrayList<WindowLV> windowLVS = new ArrayList<WindowLV>();
                         // Обработка успешного ответа от сервера
                         try {
                             for (int i = 0; i < response.length(); i++) {
@@ -140,6 +69,7 @@ public class WindowsActivity extends AppCompatActivity {
                                 if (jsonObject.length() == 0) {
                                     continue;
                                 }
+
 
 
 
@@ -158,17 +88,28 @@ public class WindowsActivity extends AppCompatActivity {
                                 Window window = new Window(id, numArduino, name, temperature, vlazhnost, gaz, windowsAreOpened,
                                         windowsAreBlocked, idDevice, user);
                                 windows.add(window);
-                            }
 
-                            recyclerView.setLayoutManager(new LinearLayoutManager(WindowsActivity.this));
-                            recyclerView.setAdapter(new MyAdapter(getApplicationContext(), windows));
+                                WindowLV windowLV = new WindowLV(name, numArduino);
+                                windowLVS.add(windowLV);
+                            }
+                            WindowAdapter windowAdapter = new WindowAdapter(WindowsActivity.this, windowLVS);
+
+                            binding.listView.setAdapter(windowAdapter);
+                            binding.listView.setClickable(true);
+                            binding.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(WindowsActivity.this, DetailsActivity2.class);
+                                    intent.putExtra("id", position);
+                                    startActivity(intent);
+                                }
+                            });
 
                             Toast.makeText(WindowsActivity.this, "Количество объектов Window: " + windows.size(), Toast.LENGTH_SHORT).show();
 
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -189,5 +130,7 @@ public class WindowsActivity extends AppCompatActivity {
 
         // Добавьте запрос в очередь
         queue.add(request);
+
+
     }
 }
