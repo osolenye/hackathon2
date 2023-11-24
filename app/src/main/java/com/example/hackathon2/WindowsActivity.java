@@ -1,6 +1,8 @@
 package com.example.hackathon2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,12 +15,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hackathon2.Data.Window;
+import com.example.hackathon2.forRecyclerView.MyAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WindowsActivity extends AppCompatActivity {
@@ -43,10 +49,42 @@ public class WindowsActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                        List<Window> windows = new ArrayList<Window>();
                         // Обработка успешного ответа от сервера
                         try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            Toast.makeText(WindowsActivity.this, "huy" + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
+//                            JSONObject jsonObject = response.getJSONObject(0);
+//                            Toast.makeText(WindowsActivity.this, "huy" + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
+
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonObject = response.getJSONObject(i);
+
+                                int id = jsonObject.getInt("id");
+                                String numArduino = jsonObject.getString("numArduino");
+                                String name = jsonObject.getString("name");
+                                double temperature = jsonObject.getDouble("temperature");
+                                double vlazhnost = jsonObject.getDouble("vlazhnost");
+                                double gaz = jsonObject.getDouble("gaz");
+                                boolean windowsAreOpened = jsonObject.getBoolean("windowsAreOpened");
+                                boolean windowsAreBlocked = jsonObject.getBoolean("windowsAreBlocked");
+                                int idDevice = jsonObject.getInt("idDevice");
+                                int user = jsonObject.getInt("user");
+
+                                // Создаем новый объект Window и добавляем его в список
+                                Window window = new Window(id, numArduino, name, temperature, vlazhnost, gaz, windowsAreOpened,
+                                        windowsAreBlocked, idDevice, user);
+                                windows.add(window);
+
+
+                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                                recyclerView.setAdapter(new MyAdapter(getApplicationContext(), ));
+                            }
+
+                            // В этом моменте windowList содержит объекты Window, созданные из JSON
+
+                            // Для примера, вы можете что-то сделать с этими объектами, например, вывести их количество
+                            Toast.makeText(WindowsActivity.this, "Количество объектов Window: " + windows.size(), Toast.LENGTH_SHORT).show();
+
 
 
                         } catch (JSONException e) {

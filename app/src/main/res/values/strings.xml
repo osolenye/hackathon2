@@ -10,4 +10,6 @@
     <string name="name">имя</string>
     <string name="password">пароль</string>
     <string name="rooms">комнаты</string>
+    <string name="arduino_number">номер платы: </string>
+    <string name="window_name">окно: </string>
 </resources>
